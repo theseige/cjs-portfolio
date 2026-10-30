@@ -1,0 +1,11 @@
+{
+  "name": "Brutal",
+  "concept": "Neo-brutalist poster: chunky block initials with hard offset shadows that you press like buttons, loud flat colour and thick black borders.",
+  "accent": "#ff4f9a",
+  "bg": "#fff3c4",
+  "ink": "#111111",
+  "ink2": "#3b382f",
+  "colorScheme": "light",
+  "glow": false,
+  "hints": { "hintPointer": "Run your cursor over the blocks to press them. Click to shake it.", "hintTouch": "Tap the blocks to shake them.", "hintAfter": "" }
+}

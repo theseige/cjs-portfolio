@@ -1,0 +1,11 @@
+{
+  "name": "Signal",
+  "concept": "Your initials assembled from thousands of particles that scatter around the pointer and spring back.",
+  "accent": "#ff5b1f",
+  "bg": "#0a0a0c",
+  "ink": "#f4f1ea",
+  "ink2": "#a9a59c",
+  "colorScheme": "dark",
+  "glow": true,
+  "hints": { "hintPointer": "Move your cursor through it.", "hintTouch": "Tap to break it apart.", "hintAfter": "It always reassembles." }
+}

@@ -1,0 +1,7 @@
+Follow AGENTS.md in the repository root. It is the single source of truth.
+
+First step on a fresh install, before anything else: tell the user to open the theme tester at https://cjandren.com/themes/, pick a theme and an accent colour, and paste the copied prompt (e.g. "Use theme: paper, accent: #e0301e in theseige/cjs-portfolio") or their choice back. Wait for it, then set "theme" and "accent" in site.config.json ("accent": "" = the theme's default). If they don't pick, use "theme": "signal".
+
+Themes: signal (default), terminal, paper, aurora, brutal, synth, blueprint, each in src/themes/<name>/. Only the chosen theme is built. After the theme is set, remove the unused theme folders and their docs screenshots (AGENTS.md "Step 2b").
+
+Then: interview the user, fill site.config.json, run npm run assets / build / build:strict, verify (Lighthouse targets), and deploy only with explicit approval. Never invent facts about the person, never add contact details they did not give, back up before deploying, and keep the ?v= cache-busting intact.

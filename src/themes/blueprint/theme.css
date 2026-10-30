@@ -1,0 +1,51 @@
+/* Blueprint: a technical drawing. Blue drafting paper with a fine grid, thin white line work, monospace labels,
+   registration corners and a highlighter accent. Layered on top of src/styles.css. Uses var(--accent) (config "accent", default #ffd23f). */
+:root {
+  --bg: #0d3b73; --bg-2: rgba(255, 255, 255, .035); --ink: #eef5ff; --ink-2: #b9cfea; --line: rgba(238, 245, 255, .34);
+  --accent-soft: rgba(255, 91, 31, .12);
+  --on-accent: #0b2340; --bar-bg: rgba(13, 59, 115, .9); --ink-faint: rgba(238, 245, 255, .55); --dots: rgba(238, 245, 255, .18);
+  --grid: linear-gradient(rgba(238, 245, 255, .09) 1px, transparent 1px) 0 0 / 24px 24px, linear-gradient(90deg, rgba(238, 245, 255, .09) 1px, transparent 1px) 0 0 / 24px 24px,
+          linear-gradient(rgba(238, 245, 255, .16) 1px, transparent 1px) 0 0 / 120px 120px, linear-gradient(90deg, rgba(238, 245, 255, .16) 1px, transparent 1px) 0 0 / 120px 120px;
+  --corners: linear-gradient(var(--ink), var(--ink)) 0 0 / 14px 1px no-repeat, linear-gradient(var(--ink), var(--ink)) 0 0 / 1px 14px no-repeat,
+             linear-gradient(var(--ink), var(--ink)) 100% 100% / 14px 1px no-repeat, linear-gradient(var(--ink), var(--ink)) 100% 100% / 1px 14px no-repeat;
+}
+body { background: var(--grid), radial-gradient(ellipse 120% 60vh at 50% 0, #12498a, transparent 70%) no-repeat, var(--bg); }
+.mark { font: 600 20px/1 var(--mono); letter-spacing: .02em; border: 1px solid var(--ink); padding: 6px 7px; }
+.dot { border-radius: 0; width: 6px; height: 6px; }
+.bar nav a::before { content: "/"; margin-right: .5em; color: var(--accent); }
+.hero-title { font: 300 clamp(150px, 38vw, 520px)/.8 var(--sans); letter-spacing: 0; color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
+.kicker { color: var(--ink); }
+.kicker::before { content: "FIG. 01 —"; color: var(--accent); }
+.pulse { display: none; }
+.tagline { font-weight: 300; letter-spacing: -.03em; }
+.hint { color: var(--ink-2); }
+.hint::before { content: "NOTE:\00a0"; color: var(--accent); }
+.marquee { transform: none; margin: 0 0 40px; background: transparent; color: var(--ink); border-block: 1px solid var(--line); }
+.marquee-track { font: 400 clamp(14px, 1.6vw, 18px)/1 var(--mono); letter-spacing: .2em; }
+.marquee-track i { color: var(--accent); opacity: 1; }
+.eyebrow { color: var(--accent); }
+.eyebrow::before { content: "§ "; }
+h2 { font-weight: 300; letter-spacing: -.04em; }
+h2 em { -webkit-text-stroke: 0; color: var(--ink); font-style: normal; text-decoration: underline 2px dashed var(--accent); text-underline-offset: .12em; }
+.card, .parent { border-radius: 0; border: 1px solid var(--line); background: var(--corners), var(--bg-2); }
+.card::before { background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .07), transparent 60%); }
+.card:hover { border-color: var(--ink); }
+.parent h3, .brand h3, .soon h3 { font-weight: 300; }
+.social-name { font-weight: 300; -webkit-text-stroke: 0; color: var(--ink); }
+.social:hover .social-name, .social:focus-visible .social-name { color: var(--accent); }
+.social-ico { border-radius: 0; }
+.social::after { background-image: linear-gradient(var(--dots) 1px, transparent 1px), linear-gradient(90deg, var(--dots) 1px, transparent 1px); background-size: 12px 12px; }
+.social-num::before { content: "No. "; }
+.brand-cat span { border-radius: 0; border-style: dashed; color: var(--ink); }
+.brand-link { font-weight: 500; }
+.status-dot { border-radius: 0; }
+.status-dot.live { box-shadow: none; }
+.soon { border-style: dashed; background: var(--bg-2); }
+.soon-num { font-weight: 300; -webkit-text-stroke: 1px var(--line); }
+.btn { border-radius: 0; background: var(--accent); color: var(--on-accent); font-family: var(--mono); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
+.btn:hover { background: var(--ink); color: var(--on-accent); }
+.bar-social a, .foot-social a { border-radius: 0; }
+.foot-big { font-weight: 300; -webkit-text-stroke: 1px var(--ink-faint); }
+.foot-row { border-top-style: dashed; }
+::selection { color: var(--on-accent); }
+.js-field .hero-title { -webkit-text-stroke: 0; }

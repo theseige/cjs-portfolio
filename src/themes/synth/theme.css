@@ -1,0 +1,45 @@
+/* Synth: synthwave sunset. Neon perspective grid, striped sun, chrome italic initials, pink/cyan neon glows.
+   Layered on top of src/styles.css. Uses var(--accent) (config "accent", default #ff2e88) plus --c2 cyan and --sun yellow. */
+:root {
+  --bg: #0c0420; --bg-2: rgba(40, 10, 70, .55); --ink: #fdf0ff; --ink-2: #c9a9e6; --line: rgba(253, 240, 255, .16);
+  --c2: #2de8ff; --sun: #ffd23f; --accent-soft: rgba(255, 91, 31, .2);
+  --on-accent: #0c0420; --bar-bg: rgba(12, 4, 32, .75); --ink-faint: rgba(253, 240, 255, .3); --dots: rgba(45, 232, 255, .2);
+}
+body { background: linear-gradient(180deg, #0c0420, #1a0636 60%, #0c0420), var(--bg); }
+.mark { font-style: italic; }
+.dot, .pulse { background: var(--c2); }
+.bar nav a:hover { color: var(--c2); }
+.hero-title { z-index: 0; font: italic 900 clamp(130px, 30vw, 440px)/.8 var(--sans); letter-spacing: -.05em; padding-bottom: 12vh; }
+.hero-title > [aria-hidden] { display: inline-block; padding: 0 .08em .06em 0;
+  background: linear-gradient(180deg, #fff 0%, #ffe9fb 30%, #8a6bff 49%, #1b0b3a 51%, var(--accent) 64%, #ffd6ec 92%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, .6)) drop-shadow(0 6px 26px rgba(255, 91, 31, .55)); }
+.hero-copy { position: relative; z-index: 1; text-shadow: 0 2px 14px #0c0420, 0 0 2px #0c0420; }
+.kicker { color: var(--c2); }
+.pulse { box-shadow: 0 0 12px var(--c2); animation: none; }
+.tagline { font-style: italic; text-transform: uppercase; letter-spacing: -.02em; }
+.hint { color: var(--ink); }
+.cue-line { background: linear-gradient(var(--c2), transparent); }
+.marquee { background: linear-gradient(90deg, var(--sun), var(--accent) 50%, #8a2bff); color: #0c0420; border: 0; }
+.marquee-track { font-style: italic; }
+.eyebrow { color: var(--c2); text-shadow: 0 0 12px rgba(45, 232, 255, .45); }
+h2 { font-style: italic; text-transform: uppercase; letter-spacing: -.04em; }
+h2 em { -webkit-text-stroke: 0; background: linear-gradient(180deg, var(--sun) 15%, var(--accent) 85%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .06em; }
+.card, .parent { border-color: rgba(255, 91, 31, .38); border-radius: 6px; box-shadow: 0 0 0 1px rgba(45, 232, 255, .06), 0 10px 40px -18px rgba(255, 91, 31, .6); }
+.card:hover { border-color: var(--c2); box-shadow: 0 0 0 1px var(--c2), 0 0 32px -6px rgba(45, 232, 255, .55); }
+.parent { background: linear-gradient(160deg, rgba(255, 91, 31, .22), rgba(45, 232, 255, .06) 70%), var(--bg-2); }
+.parent h3, .brand h3, .soon h3 { font-style: italic; }
+.social-name { font-style: italic; text-transform: uppercase; -webkit-text-stroke: 1.2px var(--c2); }
+.social:hover .social-name, .social:focus-visible .social-name { color: var(--ink); text-shadow: 0 0 18px rgba(255, 91, 31, .8); }
+.social-ico { border-color: rgba(45, 232, 255, .5); color: var(--c2); }
+.social:hover .social-go, .social:focus-visible .social-go { color: var(--c2); }
+.btn { background: linear-gradient(90deg, var(--accent), #8a2bff); color: #fff; border-radius: 4px; font-style: italic; text-transform: uppercase; box-shadow: 0 0 24px -4px rgba(255, 91, 31, .7); }
+.btn:hover { background: var(--c2); color: #0c0420; }
+.brand-cat span { border-color: rgba(45, 232, 255, .45); color: var(--c2); border-radius: 3px; }
+.brand-link:hover, .parent h3 a:hover .tld { color: var(--c2); }
+.status-dot.live { background: var(--c2); box-shadow: 0 0 12px var(--c2); }
+.soon-num { -webkit-text-stroke: 1px rgba(255, 91, 31, .45); font-style: italic; }
+.foot-big { -webkit-text-stroke: 0; font-style: italic; text-transform: uppercase;
+  background: repeating-linear-gradient(180deg, var(--sun) 0 .08em, var(--accent) .14em, transparent .14em .17em); -webkit-background-clip: text; background-clip: text; color: transparent; opacity: .85; }
+.scr { color: var(--c2); }
+@media (max-width: 600px) { .hero-title { padding-bottom: 26vh; } }

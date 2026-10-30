@@ -1,0 +1,79 @@
+{
+  "name": "Your Name",
+  "initials": "YN",
+  "url": "https://example.com",
+  "lang": "en",
+  "locale": "en_US",
+  "theme": "signal",
+  "accent": "",
+
+  "title": "Your Name · Founder of Example Co",
+  "description": "Your Name is the founder of Example Co. This one-line description is used by search engines, link previews and llms.txt.",
+  "jobTitle": "Founder",
+
+  "hero": {
+    "kicker": "example.com",
+    "tagline": "Something's being built here."
+  },
+
+  "marquee": ["Under construction", "More soon", "example.com"],
+
+  "socials": {
+    "nav": "Socials",
+    "eyebrow": "Socials",
+    "title": "Find me",
+    "titleOutline": "elsewhere.",
+    "items": [
+      { "network": "x", "handle": "@yourhandle", "url": "https://x.com/yourhandle" },
+      { "network": "linkedin", "handle": "in/your-name", "url": "https://www.linkedin.com/in/your-name" },
+      { "network": "bluesky", "handle": "@yourhandle.bsky.social", "url": "https://bsky.app/profile/yourhandle.bsky.social" },
+      { "network": "github", "handle": "yourhandle", "url": "https://github.com/yourhandle" },
+      { "network": "facebook", "handle": "yourhandle", "url": "https://www.facebook.com/yourhandle" }
+    ]
+  },
+
+  "brands": {
+    "nav": "Brands",
+    "eyebrow": "Company & brands",
+    "title": "One company.",
+    "titleOutline": "Three brands.",
+    "company": {
+      "name": "Example",
+      "suffix": ".co",
+      "url": "https://example.co/",
+      "eyebrow": "Parent company · founded by Your Name",
+      "description": "The parent company behind Brand One, Brand Two & Brand Three.",
+      "note": "One more sentence about what the company does for its brands.",
+      "cta": "Visit example.co"
+    },
+    "items": [
+      { "name": "Brand One", "category": "Products", "description": "One sentence about what Brand One makes.", "status": "Prototype stage", "state": "soon", "url": "https://brand-one.example/", "linkLabel": "brand-one.example" },
+      { "name": "Brand Two", "category": "Learning", "description": "One sentence about what Brand Two teaches.", "status": "Live now", "state": "live", "url": "https://brand-two.example/", "linkLabel": "brand-two.example" },
+      { "name": "Brand Three", "category": "Software", "description": "One sentence about what Brand Three builds.", "status": "Alpha · not for production use", "state": "soon", "url": "https://brand-three.example/", "linkLabel": "brand-three.example" }
+    ]
+  },
+
+  "soon": {
+    "nav": "Coming soon",
+    "eyebrow": "What's next",
+    "title": "More rooms",
+    "titleOutline": "under construction.",
+    "items": [
+      { "title": "Projects", "label": "Coming soon" },
+      { "title": "Writing", "label": "Coming soon" },
+      { "title": "About", "label": "Coming soon" }
+    ]
+  },
+
+  "footer": { "big": "More soon.", "copyright": "Your Name" },
+
+  "notFound": { "kicker": "Page not found", "tagline": "This part isn't built yet." },
+
+  "seo": {
+    "twitter": "@yourhandle",
+    "ogLine": "Founder of Example Co · Brand One · Brand Two · Brand Three",
+    "ogImageAlt": "Your Name · example.com: the letters YN drawn in glowing particles on a dark background",
+    "allowAICrawlers": true,
+    "llmsSummary": "Personal site of Your Name, founder of Example Co."
+  }
+}

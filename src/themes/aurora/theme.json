@@ -1,0 +1,11 @@
+{
+  "name": "Aurora",
+  "concept": "Soft northern lights: drifting colour blobs and flowing light trails that bend around your cursor.",
+  "accent": "#7c5cff",
+  "bg": "#07071a",
+  "ink": "#eef0ff",
+  "ink2": "#a3a8d6",
+  "colorScheme": "dark",
+  "glow": false,
+  "hints": { "hintPointer": "Move your cursor to bend the light.", "hintTouch": "Touch to bend the light.", "hintAfter": "" }
+}

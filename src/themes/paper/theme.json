@@ -1,0 +1,11 @@
+{
+  "name": "Paper",
+  "concept": "Editorial print: halftone initials in ink with an off-register colour plate that rolls like a press.",
+  "accent": "#e0301e",
+  "bg": "#f2ede3",
+  "ink": "#161412",
+  "ink2": "#5d574e",
+  "colorScheme": "light",
+  "glow": false,
+  "hints": { "hintPointer": "Move your cursor to bleed the ink.", "hintTouch": "Touch to bleed the ink.", "hintAfter": "The press keeps rolling." }
+}

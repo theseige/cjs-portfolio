@@ -1,0 +1,11 @@
+{
+  "name": "Blueprint",
+  "concept": "Technical drawing: initials plotted stroke by stroke on blue drafting paper with construction lines, hatching and dimension callouts; your cursor is a measuring crosshair.",
+  "accent": "#ffd23f",
+  "bg": "#0d3b73",
+  "ink": "#eef5ff",
+  "ink2": "#b9cfea",
+  "colorScheme": "dark",
+  "glow": false,
+  "hints": { "hintPointer": "Move your cursor to measure. Click to redraw.", "hintTouch": "Tap to measure and redraw.", "hintAfter": "" }
+}

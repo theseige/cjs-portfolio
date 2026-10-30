@@ -1,0 +1,11 @@
+{
+  "name": "Synth",
+  "concept": "Synthwave sunset: a neon perspective grid rushing toward a striped sun behind chrome initials; your cursor steers the horizon.",
+  "accent": "#ff2e88",
+  "bg": "#0c0420",
+  "ink": "#fdf0ff",
+  "ink2": "#c9a9e6",
+  "colorScheme": "dark",
+  "glow": false,
+  "hints": { "hintPointer": "Move your cursor to steer. Hold to hit the boost.", "hintTouch": "Drag to steer. Hold to boost.", "hintAfter": "" }
+}

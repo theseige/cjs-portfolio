@@ -1,0 +1,50 @@
+/* Paper: editorial print on a light page. Serif display type, small spaced sans labels, hairline and double
+   rules instead of boxes. Layered on top of src/styles.css. Uses var(--accent) (config "accent", default #e0301e). */
+:root {
+  --bg: #f2ede3; --bg-2: transparent; --ink: #161412; --ink-2: #5d574e; --line: rgba(22, 20, 18, .22);
+  --accent-soft: rgba(255, 91, 31, .10);
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --on-accent: #fff; --bar-bg: rgba(242, 237, 227, .9); --ink-faint: rgba(22, 20, 18, .35); --dots: rgba(22, 20, 18, .14);
+  color-scheme: light;
+}
+body { font: 400 18px/1.55 var(--serif); background-image: radial-gradient(rgba(22, 20, 18, .07) 1px, transparent 1.2px); background-size: 5px 5px; }
+.bar { border-bottom: 1px solid var(--ink); background: rgba(242, 237, 227, .88); }
+.bar.scrolled { border-bottom-color: var(--ink); }
+.mark { font: italic 700 24px/1 var(--serif); letter-spacing: -.02em; }
+.bar nav { font: italic 400 16px/1 var(--serif); letter-spacing: 0; text-transform: none; }
+.bar nav a { color: var(--ink); }
+.hero-title { font: italic 700 clamp(160px, 42vw, 560px)/.8 var(--serif); letter-spacing: -.04em; }
+.hero-copy { border-top: 4px double var(--ink); padding-top: 18px; background: rgba(242, 237, 227, .82); }
+.kicker { font: 600 12px/1 var(--sans); letter-spacing: .24em; color: var(--ink); }
+.pulse { box-shadow: none; animation: none; }
+.tagline { font: italic 700 clamp(30px, 5.4vw, 64px)/1.04 var(--serif); letter-spacing: -.02em; }
+.hint { font: 400 13px/1.5 var(--sans); color: var(--ink); }
+.cue, .foot-row, .social-num, .brand-cat span, .status, .brand-link { font-family: var(--sans); }
+.cue { color: var(--ink); }
+.marquee { color: var(--on-accent); border-color: var(--ink); }
+.marquee-track { font: italic 700 clamp(18px, 2.4vw, 28px)/1 var(--serif); text-transform: none; letter-spacing: 0; }
+.eyebrow { font: 700 12px/1.4 var(--sans); letter-spacing: .22em; border-top: 1px solid var(--ink); padding-top: 10px; color: var(--ink); }
+h2 { font: 700 clamp(44px, 8.5vw, 120px)/.95 var(--serif); letter-spacing: -.035em; }
+h2 em { -webkit-text-stroke: 0; color: var(--accent); font-style: italic; }
+.card { border: 0; border-top: 2px solid var(--ink); border-radius: 0; padding-inline: 0; background: transparent; }
+.card::before { display: none; }
+.card:hover { border-color: var(--accent); }
+.parent { border: 0; border-top: 4px double var(--ink); border-bottom: 1px solid var(--ink); border-radius: 0; background: transparent; padding-inline: 0; }
+.parent h3 { font: italic 700 clamp(48px, 9vw, 112px)/.9 var(--serif); letter-spacing: -.035em; }
+.btn { border-radius: 0; font-family: var(--sans); }
+.btn:hover { color: var(--on-accent); }
+.social::after { display: none; }
+.social-name { font: italic 700 clamp(44px, 5.2vw, 80px)/.9 var(--serif); letter-spacing: -.03em; -webkit-text-stroke: 0; color: var(--ink); }
+.social:hover .social-name, .social:focus-visible .social-name { color: var(--accent); }
+.social-ico { border-color: var(--ink); }
+.social-handle { font-family: var(--sans); color: var(--ink-2); }
+.brand h3, .soon h3 { font-family: var(--serif); font-weight: 700; letter-spacing: -.02em; }
+.brand-cat span { border-radius: 0; border: 0; padding: 0; color: var(--ink); font-weight: 700; }
+.status-dot.live { box-shadow: none; }
+.soon { border-top: 1px dashed var(--ink); }
+.soon-num { font: italic 700 120px/1 var(--serif); -webkit-text-stroke: 1px rgba(22, 20, 18, .18); }
+.foot-big { font: italic 700 clamp(64px, 17vw, 260px)/.85 var(--serif); letter-spacing: -.04em; -webkit-text-stroke: 0; color: var(--ink); }
+.foot-big::first-letter { color: var(--accent); }
+.foot-row { border-top-color: var(--ink); color: var(--ink); }
+.bar-social, .foot-social a { border-color: var(--line); }
+.scr { color: var(--accent); }

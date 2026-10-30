@@ -1,0 +1,19 @@
+{
+  "name": "cjs-portfolio",
+  "version": "1.0.0",
+  "description": "A one-page personal site your coding agent can build: particle hero, socials, brands, SEO + llms.txt. Zero dependencies.",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "author": "CJ Andren (https://cjandren.com)",
+  "homepage": "https://cjs.agency/",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:strict": "node scripts/build.mjs --strict",
+    "assets": "node scripts/assets.mjs",
+    "serve": "node scripts/serve.mjs",
+    "dev": "node scripts/build.mjs && node scripts/serve.mjs",
+    "deploy": "sh deploy/deploy.sh"
+  }
+}

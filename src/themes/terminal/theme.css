@@ -1,0 +1,45 @@
+/* Terminal: a phosphor CRT. Monospace everywhere, lowercase headings, scanlines, dashed square cards.
+   Layered on top of src/styles.css. Uses var(--accent) (config "accent", default #39ff6a). */
+:root {
+  --bg: #050805; --bg-2: rgba(57, 255, 106, .03); --ink: #d6ffe0; --ink-2: #6fa77c; --line: rgba(120, 255, 160, .2);
+  --accent-soft: rgba(255, 91, 31, .10);
+  --sans: var(--mono);
+  --on-accent: #050805; --bar-bg: rgba(5, 8, 5, .85); --ink-faint: rgba(214, 255, 224, .3); --dots: rgba(214, 255, 224, .12);
+}
+body { font-size: 15px; }
+body::after { /* scanlines + vignette */
+  content: ""; position: fixed; inset: 0; z-index: 60; pointer-events: none;
+  background: repeating-linear-gradient(rgba(0, 0, 0, .22) 0 1px, transparent 1px 3px), radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, .55));
+}
+@keyframes blink { 50% { opacity: 0; } }
+.mark { font-weight: 700; letter-spacing: -.02em; text-transform: lowercase; }
+.dot, .pulse, .status-dot { border-radius: 0; }
+.dot { animation: blink 1.6s steps(1) infinite; }
+.field { opacity: .38; }
+.hero-title { font: 700 clamp(120px, 30vw, 420px)/.8 var(--mono); letter-spacing: -.04em; text-transform: lowercase; padding-bottom: 18vh;
+  text-shadow: 0 0 28px rgba(255, 91, 31, .55); }
+.hero-title > span[aria-hidden]::after { content: "▋"; color: var(--accent); margin-left: .04em; font-size: .5em; vertical-align: .1em; animation: blink 1.05s steps(1) infinite; }
+.term { display: block; margin: 0; font: 400 clamp(13px, 1.4vw, 16px)/1.7 var(--mono); color: var(--ink-2); min-height: 3.4em; white-space: pre-wrap; }
+.term b { color: var(--accent); font-weight: 400; }
+.kicker::before { content: "~/"; color: var(--accent); margin-right: -6px; }
+.tagline { font-weight: 700; letter-spacing: -.04em; text-transform: lowercase; text-shadow: 0 0 18px rgba(255, 91, 31, .35); }
+h2 { font-weight: 700; letter-spacing: -.06em; text-transform: lowercase; }
+h2::before { content: "## "; color: var(--accent); }
+h2 em { -webkit-text-stroke: 0; color: var(--ink-2); }
+.card, .parent { border-style: dashed; border-radius: 0; }
+.card:hover { background: rgba(255, 91, 31, .08); }
+.parent h3 { font-weight: 700; letter-spacing: -.06em; text-transform: lowercase; }
+.social-ico, .btn, .bar-social a, .foot-social a, .brand-cat span { border-radius: 0; }
+.social-name { font-weight: 700; letter-spacing: -.06em; text-transform: lowercase; -webkit-text-stroke: 0; color: var(--ink); }
+.social-name::before { content: "> "; color: var(--accent); }
+.brand-cat span { border: 0; padding: 0; }
+.brand-cat span::before { content: "["; } .brand-cat span::after { content: "]"; }
+.brand h3, .soon h3 { font-weight: 700; text-transform: lowercase; }
+.soon-num { font-weight: 700; }
+.btn { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+.btn:hover { background: var(--accent); color: var(--on-accent); }
+.status-dot.live { animation: blink 1.6s steps(1) infinite; }
+.marquee { font-family: var(--mono); }
+.foot-big { font-weight: 700; color: transparent; -webkit-text-stroke: 1px rgba(255, 91, 31, .55); text-transform: lowercase; }
+@media (max-width: 600px) { .hero-title { padding-bottom: 30vh; } }
+@media (prefers-reduced-motion: reduce) { body::after { background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, .5)); } }

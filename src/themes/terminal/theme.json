@@ -1,0 +1,11 @@
+{
+  "name": "Terminal",
+  "concept": "A phosphor CRT: your intro types itself out as a shell session over falling glyph rain.",
+  "accent": "#39ff6a",
+  "bg": "#050805",
+  "ink": "#d6ffe0",
+  "ink2": "#6fa77c",
+  "colorScheme": "dark",
+  "glow": false,
+  "hints": { "hintPointer": "Move your cursor to stir the rain.", "hintTouch": "Touch to stir the rain.", "hintAfter": "" }
+}
