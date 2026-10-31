@@ -1,4 +1,4 @@
-// Local preview of dist/ that behaves like production: precompressed .br/.gz, cache headers, 404.html.
+// Local preview of dist/ that behaves like production: precompressed .br/.gz, cache headers, CSP, 404.html.
 // Usage: npm run serve  [-- --port 8080]
 import http from "node:http";
 import fs from "node:fs";
@@ -9,6 +9,8 @@ const dist = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "dist
 const i = process.argv.indexOf("--port");
 const port = Number(i > -1 ? process.argv[i + 1] : process.env.PORT || 8080);
 if (!fs.existsSync(path.join(dist, "index.html"))) { console.error("dist/ is empty: run npm run build first"); process.exit(1); }
+// send the same CSP as production (from dist/_headers), so CSP problems show up locally too
+const cspLine = fs.existsSync(path.join(dist, "_headers")) && fs.readFileSync(path.join(dist, "_headers"), "utf8").match(/^\s*Content-Security-Policy:\s*(.+)$/m);
 const types = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml",
   ".png": "image/png", ".jpg": "image/jpeg", ".txt": "text/plain; charset=utf-8", ".xml": "application/xml; charset=utf-8", ".webmanifest": "application/manifest+json; charset=utf-8", ".json": "application/json" };
 
@@ -21,6 +23,7 @@ http.createServer((req, res) => {
   if (!file.startsWith(dist) || !fs.existsSync(file) || fs.statSync(file).isDirectory() || path.basename(file).startsWith("_")) { file = path.join(dist, "404.html"); status = 404; }
   const ext = path.extname(file);
   const headers = { "Content-Type": types[ext] || "application/octet-stream", "Vary": "Accept-Encoding", "X-Content-Type-Options": "nosniff" };
+  if (cspLine) headers["Content-Security-Policy"] = cspLine[1].trim();
   headers["Cache-Control"] = ext === ".html" ? "no-cache" : url.searchParams.has("v") ? "public, max-age=31536000, immutable" : /\.(png|jpg|svg)$/.test(ext) ? "public, max-age=604800" : "public, max-age=3600";
   const ae = req.headers["accept-encoding"] || "";
   for (const [enc, suf] of [["br", ".br"], ["gzip", ".gz"]]) if (ae.includes(enc) && fs.existsSync(file + suf)) { file += suf; headers["Content-Encoding"] = enc; break; }

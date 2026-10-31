@@ -4,6 +4,8 @@
 //
 // Usage: node scripts/build.mjs [--config path] [--strict] [--no-precompress]
 //   --strict  fail if placeholder content ("Your Name", example.com, yourhandle ...) is still present (deploy uses this)
+// Optional Google tag (GA4): GOOGLE_TAG_ID=G-XXXXXXX or the gitignored site.local.json {"analytics": {"googleTagId": "G-XXXXXXX"}}.
+//   Off by default: with no ID the output has no tracking code and the default CSP.
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
@@ -52,6 +54,14 @@ if (socials) for (const s of socials.items) {
   if (!/^(https:\/\/|mailto:)/.test(s.url || "")) fail(`config: social "${s.network}" needs an https:// or mailto: url`);
 }
 if (brands) for (const b of brands.items || []) if (!b.name) fail("config: every brand needs a name");
+
+// optional Google tag: never in site.config.json, so forks don't inherit someone else's tracking
+let L = {};
+const localPath = path.join(root, "site.local.json");
+if (fs.existsSync(localPath)) { try { L = JSON.parse(read(localPath)); } catch (e) { fail(`site.local.json: ${e.message}`); } }
+const tagId = String(process.env.GOOGLE_TAG_ID || L.analytics?.googleTagId || "").trim();
+if (/^G-X+$/.test(tagId)) fail(`Google tag ID "${tagId}" is the placeholder from site.local.example.json: put your own measurement ID in site.local.json, or delete the file to build without analytics`);
+if (tagId && !/^G-[A-Z0-9]+$/.test(tagId)) fail(`Google tag ID "${tagId}" is not a GA4 measurement ID. It must look like G-XXXXXXXXXX (G- then capital letters/digits); check GOOGLE_TAG_ID or analytics.googleTagId in site.local.json`);
 
 if (flag("--strict")) {
   const raw = read(cfgPath);
@@ -115,6 +125,14 @@ const cssHash = crypto.createHash("sha256").update(css).digest("base64");
 // JS: swap accent, strip full-line comments / indentation / blank lines (safe: no multi-line strings in main.js)
 const js = swapAccent(read(path.join(src, "main.js")) + "\n" + optional(path.join(themeDir, "hero.js"))).split("\n").map((l) => l.trim()).filter((l) => l && !l.startsWith("//") && !/^\/\*.*\*\/$/.test(l)).join("\n") + "\n";
 fs.writeFileSync(path.join(dist, "main.js"), js);
+// Google tag: the config runs from a first-party file (no inline script, so script-src needs no hash); the ID is read from data-id
+const gaJs = "(function(){var s=document.currentScript,id=s&&s.dataset.id;if(!id)return;window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}window.gtag=gtag;gtag(\"js\",new Date());gtag(\"config\",id)})();\n";
+if (tagId) fs.writeFileSync(path.join(dist, "ga.js"), gaJs);
+const gaHead = tagId ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${tagId}"></script>\n<script src="/ga.js?v=${hash(gaJs)}" data-id="${tagId}" defer></script>\n` : "";
+// CSP header (dist/_headers; mirror it in your server config). The Google tag hosts follow Google's GA4 CSP guide.
+const csp = tagId
+  ? "default-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; style-src 'self' 'unsafe-inline'; script-src 'self' https://*.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+  : "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
 const v = { js: hash(js), og: og ? fileV(og) : "0", svg: hash(favicon), ico32: fileV("favicon-32.png"), apple: fileV("apple-touch-icon.png"), mani: fileV("site.webmanifest") };
 const ogUrl = og ? `${base}${og}?v=${v.og}` : "";
 
@@ -141,7 +159,7 @@ ${extra}<link rel="icon" href="/favicon.svg?v=${v.svg}" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=${v.apple}">
 <meta http-equiv="Content-Security-Policy" content="style-src 'self' 'sha256-${cssHash}'"><style>${css}</style>
 <script src="/main.js?v=${v.js}" defer></script>
-`;
+${gaHead}`;
 const mark = `<a class="mark" href="/" aria-label="${esc(C.initials === C.name ? C.name : C.initials + ", " + C.name)}, home">${esc(C.initials)}<span class="dot" aria-hidden="true"></span></a>`;
 
 /* ---------------- index.html ---------------- */
@@ -336,6 +354,7 @@ for (const [f, h] of [["index.html", index], ["404.html", page404]]) {
   const out = minHtml(h);
   if (!out.includes(`<style>${css}</style>`)) fail(`${f}: inline CSS changed (CSP hash would break)`);
   if (!out.includes(`main.js?v=${v.js}`)) fail(`${f}: main.js not versioned`);
+  if (tagId && !out.includes(`data-id="${tagId}"`)) fail(`${f}: Google tag missing`);
   if (/\$\{|undefined|\[object Object\]/.test(out)) fail(`${f}: template leak (undefined / \${ / [object Object])`);
   fs.writeFileSync(path.join(dist, f), out);
 }
@@ -422,7 +441,7 @@ ${seo.twitter ? `X: ${seo.twitter}\n` : ""}${co ? `Company: ${co.name}${co.url ?
 /* SITE */
 Last update: ${lastmod}
 Language: ${lang}
-Standards: HTML, CSS, vanilla JavaScript. No trackers, no third-party requests.
+Standards: HTML, CSS, vanilla JavaScript. ${tagId ? "Analytics: Google Analytics (gtag.js)." : "No trackers, no third-party requests."}
 Built with: CJS Portfolio (https://cjs.agency/)
 `;
 // Netlify / Cloudflare Pages header rules (ignored elsewhere; Caddy users see deploy/Caddyfile.example)
@@ -431,7 +450,7 @@ const headers = `/*
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Cross-Origin-Opener-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  Content-Security-Policy: ${csp}
 /
   Cache-Control: no-cache
 /*.html
@@ -467,3 +486,4 @@ const size = (f) => (fs.existsSync(path.join(dist, f)) ? fs.statSync(path.join(d
 console.log(`built dist/ for ${base}  (theme ${C.theme}, accent ${C.accent}, lastmod ${lastmod})`);
 console.log(`index.html ${size("index.html")} B (br ${size("index.html.br")} B) · main.js ${size("main.js")} B (br ${size("main.js.br")} B) · ${n} precompressed files`);
 console.log(`main.js?v=${v.js}  css sha256-${cssHash}`);
+if (tagId) console.log(`Google tag ${tagId} on index.html + 404.html; dist/_headers CSP allows Google's GA4 hosts (update your server's CSP too, see README > Analytics)`);

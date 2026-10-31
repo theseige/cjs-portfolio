@@ -43,7 +43,7 @@ Choose one in `site.config.json`:
 - **Company and brands.** An optional parent-company panel plus brand cards with a category, a status dot (live, soon or planned) and a link.
 - **"Coming soon" cards** for the sections you haven't built yet, and a **404 page** in the same hero style.
 - **SEO and AI discoverability.** Meta, Open Graph and Twitter tags, a JSON-LD graph (WebSite, ProfilePage, Person, Organization, Brands), `sitemap.xml`, `robots.txt` with an explicit AI-crawler allowlist (you can switch it to a blocklist), `llms.txt` + `llms-full.txt`, `humans.txt`, a web manifest, an SVG favicon and PNG icons.
-- **Fast by construction.** No frameworks, web fonts or third-party requests. The CSS is inlined behind a CSP hash. The JavaScript is about 4 KB brotli-compressed and the hero effect boots after first paint. Every asset URL is cache-busted with a content hash, and text files are precompressed (`.br`/`.gz`).
+- **Fast by construction.** No frameworks, web fonts or third-party requests (Google Analytics is opt-in, see [Analytics](#analytics-optional)). The CSS is inlined behind a CSP hash. The JavaScript is about 4 KB brotli-compressed and the hero effect boots after first paint. Every asset URL is cache-busted with a content hash, and text files are precompressed (`.br`/`.gz`).
 - **Accessible.** Real headings and landmarks, a skip link and visible focus. Screen readers get your full name instead of the initials. `prefers-reduced-motion` gets a still hero with no animation. Accessibility scores 100 in every theme.
 - **One accent.** Change one hex value and the accent updates everywhere: CSS, the hero, sparks, favicon and share image.
 
@@ -113,6 +113,7 @@ After changing `name`, `initials`, `theme`, `accent`, `url` or `seo.ogLine`, run
 
 ```
 site.config.json        all your content
+site.local.example.json optional Google tag ID template (copy to the gitignored site.local.json)
 src/styles.css          shared base styles (the Signal look; accent swapped at build time)
 src/main.js             decode, sparks, reveals, spotlight (vanilla JS)
 src/themes/<name>/      theme.json + theme.css + hero.js; only the chosen theme is built
@@ -127,6 +128,19 @@ deploy/deploy.sh        build -> backup -> rsync -> live checks
 deploy/Caddyfile.example
 media/                  logo + launch graphics (see media/README.md)
 ```
+
+## Analytics (optional)
+
+Off by default: with no ID the build has no tracking code and the strict default CSP. To add your own Google tag (GA4):
+
+```sh
+cp site.local.example.json site.local.json   # put your measurement ID in it: {"analytics": {"googleTagId": "G-XXXXXXXXXX"}}
+npm run build                                # or: GOOGLE_TAG_ID=G-XXXXXXXXXX npm run build
+```
+
+Get the ID at [analytics.google.com](https://analytics.google.com): **Admin → Data streams → Web → Measurement ID** (starts with `G-`). The build checks the format and fails on anything else. It then adds the async `gtag.js` loader plus a first-party `/ga.js` (no inline script) to every page and widens the CSP in `dist/_headers` to Google's GA4 hosts. On your own server, use the same CSP (commented line in [`deploy/Caddyfile.example`](deploy/Caddyfile.example)).
+
+`site.local.json` is gitignored. The ID isn't secret, since it is public in the built HTML, but keeping it out of git means forks and copies of your repo don't send their visitors to your analytics. Depending on your visitors (e.g. the EU/UK), you may need a cookie banner or consent mode. That is up to you, and the template doesn't add one.
 
 ## Deploy
 

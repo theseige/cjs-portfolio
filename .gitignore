@@ -4,3 +4,5 @@ node_modules/
 .DS_Store
 *.log
 .env
+# optional local settings (Google tag ID); never commit
+site.local.json

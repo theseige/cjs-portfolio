@@ -1,7 +1,7 @@
 # AGENTS.md: building a site with CJS Portfolio
 
 You are a coding agent setting up a one-page personal site for **the user** (the person you are working for) with this template.
-Follow the steps in order. The whole job is usually: pick a theme → interview → `site.config.json` → remove unused themes → assets → build → verify → deploy.
+Follow the steps in order. The whole job is usually: pick a theme → interview → `site.config.json` → remove unused themes → (optional analytics) → assets → build → verify → deploy.
 Everything the site says comes from `site.config.json`. You should almost never need to touch `src/` or `scripts/`.
 
 ## Hard rules (read first, never break)
@@ -12,7 +12,7 @@ Everything the site says comes from `site.config.json`. You should almost never 
 4. **Back up before every deploy.** `deploy/deploy.sh` copies the live site to `backups/<timestamp>/` before uploading. If you deploy any other way, make your own backup first (download the current site or keep the previous build) and tell the user where it is.
 5. **Keep cache-busting intact.** Never hand-edit `dist/`, and never reference `main.js`, icons, the manifest or the OG image without the `?v=<hash>` the build adds. HTML must stay `no-cache`. Rebuild after every change.
 6. **Don't publish, push, deploy, buy a domain, change DNS or post anything without the user's explicit OK** for that specific step.
-7. **One theme per site.** The repo ships 7 themes; the site uses exactly one (`"theme"` in `site.config.json`) and only that theme's CSS/JS is built into `dist/`. Keep the chosen theme's spec below. The user may change the accent colour and all text. Don't mix themes, add web fonts, trackers, analytics, cookie banners or third-party requests unless the user asks.
+7. **One theme per site.** The repo ships 7 themes; the site uses exactly one (`"theme"` in `site.config.json`) and only that theme's CSS/JS is built into `dist/`. Keep the chosen theme's spec below. The user may change the accent colour and all text. Don't mix themes, add web fonts, trackers, analytics, cookie banners or third-party requests unless the user asks. The only built-in extra is the optional Google tag ("Optional: analytics" below), and only with an ID the user gives you.
 8. **No placeholders in production.** `npm run build:strict` must pass before a deploy (the deploy script runs it).
 
 ## Step 0 (first install only): let the user pick a theme
@@ -91,6 +91,26 @@ ls src/themes   # only the chosen theme is left
 
 Also delete the other themes' screenshots (`docs/screenshot-<theme>.webp`) and their rows in the README theme table, and remove their spec sections from this file (keep "Shared base", "Theme files" and the chosen theme). The build only ever reads `src/themes/<theme>/`, so nothing else references the removed folders. Tell the user the other themes can be restored from the upstream repo (`theseige/cjs-portfolio`) if they change their mind. Don't remove `src/styles.css` or `src/main.js`: every theme builds on them.
 
+## Optional: analytics (Google tag)
+
+Off by default: the site ships with no trackers. Ask the user once, e.g. at the end of the interview: "Do you want Google Analytics on the site?" If they say no or don't answer, skip this step and don't create `site.local.json`.
+
+If yes:
+
+1. Tell them how to get a GA4 measurement ID: sign in at **https://analytics.google.com** → **Admin** (gear icon) → create an account and property if they have none → **Data streams** → **Web** → add their domain (or open the existing web stream) → copy the **Measurement ID**. It starts with `G-` (e.g. `G-XXXXXXXXXX`). Ask them to paste it to you. Don't guess or reuse an ID from anywhere else.
+2. Put it in `site.local.json` (gitignored), never in `site.config.json`:
+   ```sh
+   cp site.local.example.json site.local.json   # then replace G-XXXXXXXXXX with their ID
+   ```
+   CI or hosts without a local file can set `GOOGLE_TAG_ID=G-...` instead (it wins over the file).
+3. **Never commit the ID.** Check that `git check-ignore site.local.json` prints the file name and `git status` doesn't list it. Don't paste the ID into `site.config.json`, the README or a commit message.
+4. Rebuild (`npm run build`). The build checks the format (`G-` + capital letters/digits) and fails with a clear message otherwise. With an ID it adds the async `gtag.js` loader and a small first-party `/ga.js` (no inline script) to `index.html` and `404.html`, and widens the CSP in `dist/_headers` to Google's GA4 hosts. If the user deploys to their own server, update the `Content-Security-Policy` in their Caddy/nginx config to the same value (see the commented line in `deploy/Caddyfile.example`), or the tag is blocked.
+5. Verify: `npm run serve` (it sends the same CSP as `dist/_headers`), open `/` in a headless browser, and confirm there are no CSP errors in the console and that `https://www.google-analytics.com/g/collect?...tid=<their ID>` returns 204. After deploying, check the same on the live site and tell them to look at **Reports → Realtime** in Google Analytics.
+
+Tell the user two things: the measurement ID is not a secret (it is visible in the built HTML of every page). It is kept out of git so that forks and copies of their repo don't send data to their analytics property. And depending on where their visitors are (e.g. the EU/UK), they may need a cookie banner or consent mode before Google Analytics may set cookies. That is their decision; don't add a banner unless they ask.
+
+To turn analytics off again, delete `site.local.json` (and unset `GOOGLE_TAG_ID`) and rebuild: the output goes back to no tracking code and the default CSP.
+
 ## Step 3: render assets and build
 
 ```sh
@@ -117,6 +137,7 @@ Checks:
 - [ ] `dist/robots.txt`, `sitemap.xml`, `llms.txt`, `llms-full.txt` and `humans.txt` contain the real domain and only true facts.
 - [ ] JSON-LD is valid (the build parses it). Optionally paste the page into <https://validator.schema.org/>.
 - [ ] Look at `static/og.jpg` yourself (1200×630). The name is spelled right, the initials are fully visible, and nothing is cut off.
+- [ ] Only if analytics is on: the console has no CSP errors, `/ga.js?v=` and `gtag/js?id=G-…` load, and a `g/collect` request returns 204. `git status` doesn't list `site.local.json`.
 - [ ] Lighthouse (`npx lighthouse http://localhost:8080/ --preset=desktop`, then again without `--preset` for mobile) meets these targets: **Performance ≥ 95 mobile / 100 desktop, Accessibility 100, Best practices 100, SEO 100, CLS 0**. Investigate anything lower before deploying.
 
 Show the user a screenshot and the Lighthouse numbers, and ask them to approve before you deploy.

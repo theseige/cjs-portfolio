@@ -17,6 +17,8 @@ example.com {
 		Cross-Origin-Opener-Policy same-origin
 		# CSS is inlined; each page's <meta> CSP narrows style-src to that block's sha256
 		Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+		# Only with the optional Google tag (site.local.json / GOOGLE_TAG_ID): use this line instead of the one above
+		# Content-Security-Policy "default-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; style-src 'self' 'unsafe-inline'; script-src 'self' https://*.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
 	}
 
 	# HTML: always revalidate, so a deploy shows up immediately
